@@ -23,7 +23,7 @@ jobs:
 
       - name: Build with Maven
         run: ./mvnw -B verify
-
+  
       - name: SonarCloud Analysis
         run: ./mvnw sonar:sonar 
           -Dsonar.projectKey=BartoszWicha_spring-petclinic 
