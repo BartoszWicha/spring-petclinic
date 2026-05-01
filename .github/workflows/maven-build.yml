@@ -44,3 +44,10 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/spring-petclinic:latest
+      
+      - name: Rollback on failure
+        if: failure()
+        run: |
+          echo "Build failed! Rolling back..."
+          git revert HEAD --no-edit
+          git push
