@@ -49,5 +49,9 @@ jobs:
         if: failure()
         run: |
           echo "Build failed! Rolling back..."
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
           git revert HEAD --no-edit
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
