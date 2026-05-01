@@ -50,7 +50,7 @@ jobs:
           echo "Build failed! Rolling back..."
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
-          git revert HEAD --no-edit -- . ':(exclude).github/workflows/'
-          git push
+          git reset --hard HEAD~1
+          git push --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
