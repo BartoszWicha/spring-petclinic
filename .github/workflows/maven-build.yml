@@ -47,9 +47,9 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            docker stop $(docker ps -q) || true
+            docker rm $(docker ps -aq) || true
             docker pull bartoszwicha/spring-petclinic:latest
-            docker stop petclinic || true
-            docker rm petclinic || true
             docker run -d --name petclinic -p 8080:8080 bartoszwicha/spring-petclinic:latest
 
       - name: Rollback on failure
