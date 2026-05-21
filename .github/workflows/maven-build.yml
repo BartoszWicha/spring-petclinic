@@ -47,12 +47,14 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            sudo curl -L https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+            sudo chmod +x /usr/local/bin/docker-compose
             cd ~
-            curl -o docker-compose.yml https://raw.githubusercontent.com/BartoszWicha/spring-petclinic/main/monitoring-compose.yml
+            curl -o monitoring-compose.yml https://raw.githubusercontent.com/BartoszWicha/spring-petclinic/main/monitoring-compose.yml
             curl -o prometheus.yml https://raw.githubusercontent.com/BartoszWicha/spring-petclinic/main/prometheus.yml
-            docker-compose down || true
+            docker-compose -f monitoring-compose.yml down || true
             docker pull bartoszwicha/spring-petclinic:latest
-            docker-compose up -d
+            /usr/local/bin/docker-compose -f monitoring-compose.yml up -d
             
       - name: Rollback on failure
         if: failure()
