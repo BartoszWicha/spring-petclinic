@@ -47,12 +47,12 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd ~
-            curl -o monitoring-compose.yml https://raw.githubusercontent.com/BartoszWicha/spring-petclinic/main/monitoring-compose.yml
-            curl -o prometheus.yml https://raw.githubusercontent.com/BartoszWicha/spring-petclinic/main/prometheus.yml
-            ~/.local/bin/docker-compose -f monitoring-compose.yml down || true
+            docker stop petclinic prometheus grafana || true
+            docker rm petclinic prometheus grafana || true
             docker pull bartoszwicha/spring-petclinic:latest
-            ~/.local/bin/docker-compose -f monitoring-compose.yml up -d
+            docker run -d --name petclinic -p 8080:8080 bartoszwicha/spring-petclinic:latest
+            docker run -d --name prometheus -p 9090:9090 prom/prometheus
+            docker run -d --name grafana -p 3000:3000 grafana/grafana
             
       - name: Rollback on failure
         if: failure()
