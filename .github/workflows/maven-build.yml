@@ -52,7 +52,7 @@ jobs:
             cd ~
             curl -o monitoring-compose.yml https://raw.githubusercontent.com/BartoszWicha/spring-petclinic/main/monitoring-compose.yml
             curl -o prometheus.yml https://raw.githubusercontent.com/BartoszWicha/spring-petclinic/main/prometheus.yml
-            docker-compose -f monitoring-compose.yml down || true
+            /usr/local/bin/docker-compose -f monitoring-compose.yml down || true
             docker pull bartoszwicha/spring-petclinic:latest
             /usr/local/bin/docker-compose -f monitoring-compose.yml up -d
             
